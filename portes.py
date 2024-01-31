@@ -1,3 +1,5 @@
+from ascenceur import Ascenceur
+
 class Portes:
     def __init__(self, etage):
         self.etage = etage
@@ -15,3 +17,13 @@ class Portes:
 
     def __str__(self):
         return "Etage: " + str(self.etage)
+    
+    def ouvrir(self):
+        self.setOuvert(True)
+    
+    def fermer(self):
+        self.setOuvert(False)
+
+    def redemarrer(a : Ascenceur):
+        a.setArret(False)
+        print("Redémarrage de l'ascenceur...")

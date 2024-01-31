@@ -81,6 +81,6 @@ class Ascenceur:
         if self.etage in self.appels:
             self.appels.remove(self.etage)
 
-    def signalerOuverture(portes):
+    def signalerOuverture(portes : Portes):
         portes.setOuvert(True)
         print("Portes ouvertes")
