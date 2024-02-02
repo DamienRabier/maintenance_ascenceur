@@ -20,9 +20,11 @@ class Portes:
     
     def ouvrir(self):
         self.setOuvert(True)
+        print(f"Porte ouverte à l'étage {self.etage}...")
     
     def fermer(self):
         self.setOuvert(False)
+        print(f"Porte fermée à l'étage {self.etage}...")
 
     def redemarrer(a : Ascenceur):
         a.setArret(False)

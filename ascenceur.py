@@ -2,13 +2,14 @@ from portes import Portes
 from usager import Usager
 
 class Ascenceur:
-    def __init__(self, etageActuel, etageMax, etageMin, destinations, appels):
-        self.etage = etageActuel
+    def __init__(self, etageMax, etageMin):
+        self.etage = 0
         self.etageMax = etageMax
         self.etageMin = etageMin
         self.direction = "haut"
-        self.destinations = destinations
-        self.appels = appels
+        self.destinations = []
+        self.appels = []
+        self.passagers = []
         self.arret = False
 
     def getEtage(self):
@@ -35,6 +36,12 @@ class Ascenceur:
         return self.destinations
     def setDestinations(self, destinations):
         self.destinations = destinations
+        
+    def addDestinations(self, destinations):
+        self.destinations.append(destinations)
+        
+    def addAppels(self, appels):
+        self.appels.append(appels)
 
     def getAppels(self):
         return self.appels
@@ -46,14 +53,21 @@ class Ascenceur:
     def setArret(self, arret):
         self.arret = arret
     
+    def getPassagers(self):
+        return self.passagers
+    def addPassagers(self, passagers):
+        self.passagers.append(passagers)
+    
     def __str__(self) -> str:
         return f"Etage: {self.etage}, Direction: {self.direction}, Destinations: {self.destinations}, Appels: {self.appels}"
     
     def monter(self):
-        self.etage += 1
+        if self.direction == "haut" and self.etage < self.etageMax:
+            self.etage += 1
     
     def descendre(self):
-        self.etage -= 1
+        if self.direction == "bas" and self.etage > self.etageMin:
+            self.etage -= 1
     
     def bouger(self):
         if self.direction == "monte" and self.etage < self.etageMax:
@@ -84,3 +98,6 @@ class Ascenceur:
     def signalerOuverture(portes : Portes):
         portes.setOuvert(True)
         print("Portes ouvertes")
+        
+    def recevoirAppel(self, etage):
+        self.appels.append(etage)
