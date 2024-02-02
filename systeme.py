@@ -1,49 +1,25 @@
 from ascenceur import Ascenceur
-from portes import Portes
 from usager import Usager
 
 def main():
-    # Inicialización de los componentes del sistema
-    etage_max = 10
-    etage_min = 0
-    ascenseur = Ascenceur(etage_max, etage_min)
-    portes = {etage: Portes(etage) for etage in range(etage_min, etage_max + 1)}
+    ascenseur = Ascenceur(etage_max=10, etage_min=0)
     usagers = [
-        Usager(etage=0, direction="haut", destination=5, distrait=False),
-        Usager(etage=3, direction="bas", destination=1, distrait=True)
+        Usager(etage=0, destination=5),
+        Usager(etage=3, destination=1)
     ]
 
-    # Simulación de llamadas al ascensor
     for usager in usagers:
-        print(usager)
-        usager.appeler_ascenceur(ascenseur)
+        usager.appeler_ascenseur(ascenseur)
 
-    # Proceso de movimiento del ascensor
-    while ascenseur.appels or ascenseur.destinations:
+    while ascenseur.destinations:
         ascenseur.bouger()
-        etage_actuel = ascenseur.getEtage()
-        print(f"L'ascenseur arrive à l'étage {etage_actuel}.")
-
-        # Verificar si el ascensor debe detenerse en este piso
-        ascenseur.doitArreter()
-        if ascenseur.getArret():
-            # Simular apertura de puertas
-            portes[etage_actuel].ouvrir()
-            ascenseur.signalerOuverture(portes[etage_actuel])
-
-            # Embarque de pasajeros
+        if ascenseur.etage_actuel in ascenseur.destinations:
+            ascenseur.ouvrir_porte()
             for usager in usagers:
-                if usager.getEtage() == etage_actuel and usager.entrerOuNon():
-                    ascenseur.addPassagers(usager)
-                    print(f"Usager au {usager.getEtage()} entre dans l'ascenseur.")
-
-            # Cerrar puertas y reanudar movimiento
-            portes[etage_actuel].fermer()
-            ascenseur.supprimeAppelDestinationEtageCourant()
-            ascenseur.setArret(False)
-
-        # Decidir la próxima dirección del ascensor
-        ascenseur.renverser()
+                if usager.etage == ascenseur.etage_actuel:
+                    usager.entrer_ascenseur(ascenseur)
+            ascenseur.fermer_porte()
 
 if __name__ == "__main__":
     main()
+

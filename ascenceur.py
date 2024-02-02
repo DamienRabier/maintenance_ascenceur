@@ -1,103 +1,49 @@
-from portes import Portes
-from usager import Usager
-
 class Ascenceur:
-    def __init__(self, etageMax, etageMin):
-        self.etage = 0
-        self.etageMax = etageMax
-        self.etageMin = etageMin
-        self.direction = "haut"
+    def __init__(self, etage_max, etage_min):
+        self.etage_actuel = 0
+        self.etage_max = etage_max
+        self.etage_min = etage_min
+        self.direction = None  # Puede ser 'haut', 'bas' o None
         self.destinations = []
-        self.appels = []
-        self.passagers = []
         self.arret = False
 
-    def getEtage(self):
-        return self.etage
-    def setEtage(self, etage):
-        self.etage = etage
+    def ajouter_destination(self, etage):
+        if etage not in self.destinations:
+            self.destinations.append(etage)
+            self.destinations.sort()
 
-    def getEtageMax(self):
-        return self.etageMax
-    def setEtageMax(self, etageMax):
-        self.etageMax = etageMax
-
-    def getEtageMin(self):
-        return self.etageMin
-    def setEtageMin(self, etageMin):
-        self.etageMin = etageMin
-
-    def getDirection(self):
-        return self.direction
-    def setDirection(self, direction):
-        self.direction = direction
-    
-    def getDestinations(self):
-        return self.destinations
-    def setDestinations(self, destinations):
-        self.destinations = destinations
-        
-    def addDestinations(self, destinations):
-        self.destinations.append(destinations)
-        
-    def addAppels(self, appels):
-        self.appels.append(appels)
-
-    def getAppels(self):
-        return self.appels
-    def setAppels(self, appels):
-        self.appels = appels
-    
-    def getArret(self):
-        return self.arret
-    def setArret(self, arret):
-        self.arret = arret
-    
-    def getPassagers(self):
-        return self.passagers
-    def addPassagers(self, passagers):
-        self.passagers.append(passagers)
-    
-    def __str__(self) -> str:
-        return f"Etage: {self.etage}, Direction: {self.direction}, Destinations: {self.destinations}, Appels: {self.appels}"
-    
     def monter(self):
-        if self.direction == "haut" and self.etage < self.etageMax:
-            self.etage += 1
-    
+        if self.etage_actuel < self.etage_max:
+            self.etage_actuel += 1
+            self.direction = "haut"
+
     def descendre(self):
-        if self.direction == "bas" and self.etage > self.etageMin:
-            self.etage -= 1
-    
+        if self.etage_actuel > self.etage_min:
+            self.etage_actuel -= 1
+            self.direction = "bas"
+
+    def choisir_direction(self):
+        if self.destinations:
+            if self.etage_actuel < self.destinations[0]:
+                self.direction = "haut"
+            elif self.etage_actuel > self.destinations[0]:
+                self.direction = "bas"
+            else:
+                self.direction = None
+
     def bouger(self):
-        if self.direction == "monte" and self.etage < self.etageMax:
+        self.choisir_direction()
+        if self.direction == "haut":
             self.monter()
-        elif self.direction == "descend" and self.etage > self.etageMin:
+        elif self.direction == "bas":
             self.descendre()
-    
-    def renverser(self):
-        if self.direction == "monte" and self.etage == self.etageMax:
-            self.direction = "descend"
-        elif self.direction == "descend" and self.etage == self.etageMin:
-            self.direction = "monte"
 
-    def doitArreter(self):
-        if self.etage in self.destinations:
-            self.setArret(True)
-        elif self.etage in self.appels:
-            self.setArret(True)
-        else:
-            self.setArret(False)
+    def ouvrir_porte(self):
+        print(f"Porte ouverte à l'étage {self.etage_actuel}.")
+        self.arret = True
 
-    def supprimeAppelDestinationEtageCourant(self):
-        if self.etage in self.destinations:
-            self.destinations.remove(self.etage)
-        if self.etage in self.appels:
-            self.appels.remove(self.etage)
-
-    def signalerOuverture(portes : Portes):
-        portes.setOuvert(True)
-        print("Portes ouvertes")
-        
-    def recevoirAppel(self, etage):
-        self.appels.append(etage)
+    def fermer_porte(self):
+        print(f"Porte fermée à l'étage {self.etage_actuel}.")
+        self.arret = False
+        if self.etage_actuel in self.destinations:
+            self.destinations.remove(self.etage_actuel)
