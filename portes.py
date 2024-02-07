@@ -26,6 +26,6 @@ class Portes:
         self.setOuvert(False)
         print(f"Porte fermée à l'étage {self.etage}...")
 
-    def redemarrer(a : Ascenceur):
+    def redemarrer(a : Ascenceur): 
         a.setArret(False)
         print("Redémarrage de l'ascenceur...")
