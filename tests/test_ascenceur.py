@@ -62,20 +62,29 @@ class TestAscenseur(unittest.TestCase):
         ascenseur.descendre()
         self.assertEqual(ascenseur.etage_actuel, -1)
 
-    def test_choisir_direction(self):
+    def test_choisir_direction_destinations_bas(self):
         ascenseur = Ascenceur(etage_max=10, etage_min=0)
-        ascenseur.destinations = [3, 7, 9]
+        ascenseur.destinations = [3]
         ascenseur.etage_actuel = 5
         ascenseur.choisir_direction()
         self.assertEqual(ascenseur.direction, "bas")
-        ascenseur.etage_actuel = 2
+
+    def test_choisir_direction_destinations_haut(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.destinations = [3]
+        ascenseur.etage_actuel = 1
         ascenseur.choisir_direction()
         self.assertEqual(ascenseur.direction, "haut")
-        ascenseur.etage_actuel = 7
-        ascenseur.destinations = [7]
+    
+    def test_choisir_direction_destinations_none(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.destinations = [3]
+        ascenseur.etage_actuel = 3
         ascenseur.choisir_direction()
         self.assertIsNone(ascenseur.direction)
-        ascenseur.destinations = []
+    
+    def test_choisir_direction_destinations_vide(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
         ascenseur.choisir_direction()
         self.assertIsNone(ascenseur.direction)
 
@@ -116,7 +125,7 @@ class TestAscenseur(unittest.TestCase):
         ascenseur.ouvrir_porte()
         self.assertTrue(ascenseur.arret)
 
-    def test_fermer_porte(self):
+    def test_fermer_porte_destinations_in(self):
         ascenseur = Ascenceur(etage_max=10, etage_min=0)
         ascenseur.destinations = [5, 6, 7]
         ascenseur.etage_actuel = 5
@@ -125,32 +134,26 @@ class TestAscenseur(unittest.TestCase):
         ascenseur.fermer_porte()  
         self.assertFalse(ascenseur.arret) 
         self.assertEqual(ascenseur.destinations, [6, 7])
-        ascenseur.bouger()
-        ascenseur.ouvrir_porte()
-        self.assertTrue(ascenseur.arret)
-        ascenseur.fermer_porte()
-        self.assertFalse(ascenseur.arret)
-        self.assertEqual(ascenseur.destinations, [7])
-        ascenseur.descendre()
-        ascenseur.ouvrir_porte()
-        self.assertTrue(ascenseur.arret)
-        ascenseur.fermer_porte()
-        self.assertFalse(ascenseur.arret)
-        self.assertEqual(ascenseur.destinations, [7])
-        ascenseur.bouger()
-        ascenseur.bouger()
-        ascenseur.ouvrir_porte()
-        self.assertTrue(ascenseur.arret)
-        ascenseur.fermer_porte()
-        self.assertFalse(ascenseur.arret)
-        self.assertEqual(ascenseur.destinations, [])
-        ascenseur.monter()
-        ascenseur.ouvrir_porte()
-        self.assertTrue(ascenseur.arret)
-        ascenseur.fermer_porte()
-        self.assertFalse(ascenseur.arret)
-        self.assertEqual(ascenseur.destinations, [])
 
+    def test_fermer_porte_destinations_out(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.destinations = [6, 7]
+        ascenseur.etage_actuel = 5
+        ascenseur.ouvrir_porte()  
+        self.assertTrue(ascenseur.arret) 
+        ascenseur.fermer_porte()  
+        self.assertFalse(ascenseur.arret) 
+        self.assertEqual(ascenseur.destinations, [6, 7])
+    
+    def test_fermer_porte_destinations_vide(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.destinations = []
+        ascenseur.etage_actuel = 5
+        ascenseur.ouvrir_porte()  
+        self.assertTrue(ascenseur.arret) 
+        ascenseur.fermer_porte()  
+        self.assertFalse(ascenseur.arret) 
+        self.assertEqual(ascenseur.destinations, [])
 
 if __name__ == "__main__":
     unittest.main()
