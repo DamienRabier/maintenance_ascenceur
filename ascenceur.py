@@ -51,3 +51,13 @@ class Ascenceur:
         self.arret = False
         if self.etage_actuel in self.destinations:
             self.destinations.remove(self.etage_actuel)
+        
+    def redemarrer(self):
+        if not self.arret and self.etage_actuel in self.destinations:
+            print("Redémarrage de l'ascenseur...")
+            self.bouger()
+        else:
+            print("L'ascenseur est déjà en mouvement ou il n'y a pas de destinations actuelles.")
+
+if __name__ == "__main__":
+    unittest.main()
