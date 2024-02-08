@@ -1,5 +1,4 @@
 from portes import Portes
-from ascenceur import Ascenceur
 
 def test_porte_initial_state():
     portes = Portes(etage=0)
