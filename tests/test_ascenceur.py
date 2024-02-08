@@ -155,5 +155,39 @@ class TestAscenseur(unittest.TestCase):
         self.assertFalse(ascenseur.arret) 
         self.assertEqual(ascenseur.destinations, [])
 
+    def test_redemarer_arret(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.etage_actuel = 5
+        ascenseur.destinations = [6]
+        ascenseur.ouvrir_porte()
+        ascenseur.redemarrer()
+        self.assertEqual(ascenseur.etage_actuel, 5)
+        self.assertTrue(ascenseur.arret)
+
+    def test_redemarer_destinations_in(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.etage_actuel = 5
+        ascenseur.destinations = [5]
+        ascenseur.redemarrer()
+        self.assertEqual(ascenseur.etage_actuel, 5)
+        self.assertFalse(ascenseur.arret)
+    
+    def test_redemarer_arret_destinations_in(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.etage_actuel = 5
+        ascenseur.destinations = [5]
+        ascenseur.ouvrir_porte()
+        ascenseur.redemarrer()
+        self.assertEqual(ascenseur.etage_actuel, 5)
+        self.assertTrue(ascenseur.arret)
+
+    def test_redemarer_destinations_out(self):
+        ascenseur = Ascenceur(etage_max=10, etage_min=0)
+        ascenseur.etage_actuel = 5
+        ascenseur.destinations = [6]
+        ascenseur.redemarrer()
+        self.assertEqual(ascenseur.etage_actuel, 6)
+        self.assertFalse(ascenseur.arret)
+
 if __name__ == "__main__":
     unittest.main()
