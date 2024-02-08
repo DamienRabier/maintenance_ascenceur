@@ -188,6 +188,3 @@ class TestAscenseur(unittest.TestCase):
         ascenseur.redemarrer()
         self.assertEqual(ascenseur.etage_actuel, 6)
         self.assertFalse(ascenseur.arret)
-
-if __name__ == "__main__":
-    unittest.main()
